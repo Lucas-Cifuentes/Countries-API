@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from "styled-components"
+import { Link } from "react-router-dom"
 
 const Container = styled.div`
   display: flex;
@@ -36,8 +37,22 @@ const Data = styled.span`
   font-weight: 300;
 `
 
+const LinkStyled = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.5rem;
+  a{
+    color: #2196f3;
+    text-decoration: none;
+    margin-left: 0.5rem;
+  }
+`
+
 const Card = ({ country }) => {
   const { flag, name, population, region, capital } = country;
+
+  const path = `/details/${name}`;
 
   return (
     <Container>
@@ -47,7 +62,11 @@ const Card = ({ country }) => {
           <Item>Population: <Data> {population} </Data> </Item>
           <Item>Region: <Data> {region} </Data> </Item>
           <Item>Capital: <Data> {capital} </Data> </Item>
-        </Description>
+      </Description>
+      <LinkStyled>
+      <i className="fas fa-info-circle"></i>
+      <Link to={path} >Details</Link>
+      </LinkStyled>
     </Container>
   )
 }
