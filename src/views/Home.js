@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import styled from "styled-components"
-
+import {connect} from "react-redux"
 import Card from "../components/common/Card"
 import Filter from "../components/layout/Filter"
 
@@ -12,18 +12,14 @@ const Container = styled.div`
   justify-content: center;
 `
 
-const Home = () => {
-  const [countries, setCountries] = useState([])
-
+const Home = ({ countries, addCountries }) => {
+  const url = "https://restcountries.eu/rest/v2/all";
   useEffect(() => {
     getCountries()
   }, [])
 
   const getCountries = () => {
-    fetch("https://restcountries.eu/rest/v2/all")
-      .then(res => res.json())
-      .then(res => setCountries(res))
-      .catch(err => console.log(err))
+    fetch(url).then(res => res.json()).then(res => addCountries(res) )
   }
 
   return (
@@ -40,4 +36,17 @@ const Home = () => {
   )
 }
 
-export default Home;
+const mapStateToProps = state => ({
+  countries: state.countries
+})
+
+const mapDispatchToProps = dispatch => ({
+  addCountries(countries) {
+    dispatch({
+      type: "ADD_COUNTRIES",
+      countries
+    })
+  }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home)
